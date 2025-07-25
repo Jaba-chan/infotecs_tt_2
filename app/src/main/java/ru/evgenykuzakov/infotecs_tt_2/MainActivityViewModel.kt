@@ -21,10 +21,22 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun calc(operator: Operator) {
+        _uiState.update { it.copy(error = null) }
         val firstNum = _uiState.value.firstNum.toDoubleOrNull()
         val secondNum = _uiState.value.secondNum.toDoubleOrNull()
 
-        if (firstNum == null || secondNum == null) return
+        if (firstNum == null || secondNum == null){
+            _uiState.update {
+                it.copy(error = "Error: Неверный ввод")
+            }
+            return
+        }
+        if (operator == Operator.Division && secondNum == 0.0){
+            _uiState.update {
+                it.copy(error = "Error: Деление на 0")
+            }
+            return
+        }
         _uiState.update { it.copy(operator = operator) }
         _uiState.update {
             it.copy(

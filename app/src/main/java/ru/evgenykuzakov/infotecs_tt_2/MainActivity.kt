@@ -8,15 +8,19 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ru.evgenykuzakov.infotecs_tt_2.theme.AppTheme
 import java.math.BigDecimal
@@ -47,7 +51,7 @@ class MainActivity : ComponentActivity() {
                             Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 100.dp, horizontal = 32.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             NumberField(
                                 value = state.firstNum,
@@ -60,13 +64,23 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Row(
+                            Modifier.align(Alignment.CenterHorizontally),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
                             operators.forEach { operator ->
                                 OperatorButton(viewModel::calc, operator)
                             }
                         }
 
-                        Text(state.result)
+                        Spacer(Modifier.height(32.dp))
+
+                        Text(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            text = state.error ?: state.result,
+                            color = if (state.error != null) Color.Red else Color.Black
+                        )
+
                     }
                 }
             }
